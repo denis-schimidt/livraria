@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title><ui:insert name="tituloPaginaHtml">Livraria</ui:insert></title>
+    <ui:insert name="css-adicional"/>
+</h:head>
+
+<h:body>
+    <div id="cabecalho">
+        <!--<h:graphicImage library="img" title="Logotipo Caelum" name="logo.png" width="15%" />-->
+        <h:graphicImage title="Logotipo Caelum" url="http://sergiolopes.github.io/css3-experimentos/logo-caelum-css3/caelum-logo.png" width="15%" />
+        <h1>
+            <ui:insert name="tituloCorpoPagina">Livraria</ui:insert>
+        </h1>
+    </div>
+
+    <div id="corpo">
+        <ui:insert name="corpo"/>
+    </div>
+    <div id="rodape" style="position:absolute;bottom:0; text-align: center; width: 99%">
+        <p>&copy; copyright 2012</p>
+    </div>
+    <ui:insert name="js-adicional"/>
+</h:body>
+
+</html>

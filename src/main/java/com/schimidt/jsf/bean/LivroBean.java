@@ -66,7 +66,6 @@ public class LivroBean implements Serializable {
     public List<Autor> listarAutoresNaoSelecionados() {
         EntityManager em = JPAUtil.newEntityManager();
         List<Autor> autoresNaoSelecionados = new DAO<Autor>(Autor.class, em).listaTodos();
-
         autoresNaoSelecionados.removeAll(livro.getAutores());
 
         em.close();
@@ -88,5 +87,29 @@ public class LivroBean implements Serializable {
 
     public View cadastrarNovoAutor() {
         return new RedirectView("autor");
+    }
+
+    public void remover(Livro livro) {
+        final EntityManager em = JPAUtil.newEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            DAO<Livro> livroDAO = new DAO<>(Livro.class, em);
+            livroDAO.remove(livro);
+
+            System.out.printf("Apagando livro (id %d) com título %s ", livro.getId(), livro.getTitulo());
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+
+        } finally {
+            em.close();
+        }
+    }
+
+    public void carregarLivroNaTela(Livro livro) {
+        this.livro = livro;
     }
 }

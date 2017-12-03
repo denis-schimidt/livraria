@@ -4,6 +4,7 @@ import com.schimidt.jsf.dao.DAO;
 import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.modelo.Livro;
+
 import javax.persistence.EntityManager;
 
 public class LivroService {
@@ -16,7 +17,14 @@ public class LivroService {
         try {
             em.getTransaction().begin();
             livro.getAutores().forEach(autorDao::atualiza);
-            livroDao.adiciona(livro);
+
+            if (livro.getId() == null) {
+                livroDao.adiciona(livro);
+
+            } else {
+                livroDao.atualiza(livro);
+            }
+
             em.getTransaction().commit();
 
         } catch (Exception e) {

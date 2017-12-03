@@ -1,11 +1,17 @@
 package com.schimidt.jsf.modelo;
 
+import com.google.common.base.MoreObjects;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.*;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 @Entity
 @Table(name = "livro")
@@ -21,7 +27,7 @@ public class Livro implements Serializable{
     @Temporal(value = TemporalType.TIMESTAMP)
 	private Calendar dataLancamento;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "livro_autor", joinColumns = @JoinColumn(name = "livro_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "autor_id", referencedColumnName = "id"))
 	private List<Autor> autores = new ArrayList<Autor>();
@@ -77,4 +83,16 @@ public class Livro implements Serializable{
     public void setDataLancamento(final Calendar dataLancamento) {
         this.dataLancamento = dataLancamento;
     }
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("id", id)
+				.add("titulo", titulo)
+				.add("isbn", isbn)
+				.add("preco", preco)
+				.add("dataLancamento", dataLancamento)
+				.add("autores", autores)
+				.toString();
+	}
 }
