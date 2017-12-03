@@ -71,6 +71,17 @@
                     <h:column>
                         <h:outputText value="#{autor.nome}"/>
                     </h:column>
+                    <h:column>
+                        <div class="centraliza">
+                            <h:commandLink id="linkRemocaoAssociacaoComAutor"
+                                           action="#{livroBean.removerAssociacaoCom(autor)}">
+                                <h:graphicImage library="img" name="delete.png">
+                                    <f:ajax execute="linkRemocaoAssociacaoComAutor" event="click"
+                                            render="tabelaAutores"/>
+                                </h:graphicImage>
+                            </h:commandLink>
+                        </div>
+                    </h:column>
                 </h:dataTable>
 
             </fieldset>
@@ -111,7 +122,7 @@
                 <h:column>
                     <div class="centraliza">
                         <f:facet name="header">Remover</f:facet>
-                        <h:commandLink action="#{livroBean.remover(livro)}">
+                        <h:commandLink action="#{livroBean.remover(livro)}" title="Clique aqui para excluir o livro">
                             <h:graphicImage library="img" name="delete.png"/>
                         </h:commandLink>
                     </div>
@@ -119,7 +130,8 @@
                 <h:column>
                     <div class="centraliza">
                         <f:facet name="header">Alterar</f:facet>
-                        <h:commandLink action="#{livroBean.carregarLivroNaTela(livro)}">
+                        <h:commandLink title="Clique aqui para carregar o livro para atualizá-lo">
+                            <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livro}"/>
                             <h:graphicImage library="img" name="atualiza.png"/>
                         </h:commandLink>
                     </div>

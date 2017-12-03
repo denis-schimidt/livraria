@@ -109,7 +109,11 @@ public class LivroBean implements Serializable {
         }
     }
 
-    public void carregarLivroNaTela(Livro livro) {
+    public void setLivro(Livro livro) {
         this.livro = livro;
+    }
+
+    public void removerAssociacaoCom(Autor autor) {
+        this.livro.remover(autor);
     }
 }

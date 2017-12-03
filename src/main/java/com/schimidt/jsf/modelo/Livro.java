@@ -84,6 +84,10 @@ public class Livro implements Serializable{
         this.dataLancamento = dataLancamento;
     }
 
+    public void remover(Autor autor){
+		this.autores.remove(autor);
+	}
+
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)

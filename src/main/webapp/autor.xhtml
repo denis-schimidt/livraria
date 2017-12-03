@@ -4,6 +4,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:composition template="_template.xhtml">
+    <ui:define name="css-adicional">
+        <h:outputStylesheet library="css" name="livro.css"/>
+    </ui:define>
     <ui:define name="tituloCorpoPagina">
         Cadastro de Autores
     </ui:define>
@@ -21,7 +24,37 @@
                 </h:panelGrid>
             </fieldset>
             <br/>
-            <h:commandButton value="Gravar" action="#{autorBean.gravar}"/>
+            <h:commandButton value="Gravar" action="#{autorBean.gravar}" style="margin-right: 0.5%"/>
+            <h:commandButton value="Novo Livro" action="#{autorBean.cadastrarLivroComAutor}" immediate="true"/>
+        </h:form>
+
+        <br/>
+        <h:form id="tabelaAutores">
+            <h:dataTable value="#{autorBean.listarTodos()}" var="autor">
+                <h:column>
+                    <f:facet name="header">
+                        Autores
+                    </f:facet>
+                    <h:outputText value="#{autor.nome}"/>
+                </h:column>
+                <h:column>
+                    <div class="centraliza">
+                        <f:facet name="header">Remover</f:facet>
+                        <h:commandLink action="#{autorBean.remover(autor)}" title="Clique aqui para excluir o autor">
+                            <h:graphicImage library="img" name="delete.png"/>
+                        </h:commandLink>
+                    </div>
+                </h:column>
+                <h:column>
+                    <div class="centraliza">
+                        <f:facet name="header">Alterar</f:facet>
+                        <h:commandLink title="Clique aqui para carregar o autor para atualizá-lo">
+                            <f:setPropertyActionListener value="#{autor}" target="#{autorBean.autor}"/>
+                            <h:graphicImage library="img" name="atualiza.png"/>
+                        </h:commandLink>
+                    </div>
+                </h:column>
+            </h:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>
