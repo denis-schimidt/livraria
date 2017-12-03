@@ -17,12 +17,12 @@ class CondicionalConcatenator<T> {
         this.valueToBeTested = builder.valueToBeTested;
     }
 
-    void concatenateStringDependingOnCondition(final MoreObjects.ToStringHelper resultHelper) {
+    void concatenateStringDependingOnCondition(final StringBuilder resultBuilder) {
 
         valueToBeTested = extractorOfNextValueToBeTested.apply(valueToBeTested);
 
         if (condition.test(valueToBeTested)) {
-            resultHelper.addValue(stringToConcatenate);
+            resultBuilder.append(stringToConcatenate);
         }
     }
     
@@ -36,27 +36,27 @@ class CondicionalConcatenator<T> {
         private String stringToConcatenate;
         private T valueToBeTested;
 
-        Builder withCondition(final Predicate<T> condition) {
+        Builder onCondition(final Predicate<T> condition) {
             this.condition = condition;
             return this;
         }
 
-        Builder withExtractorOfNextValueToBeTested(final Function<T, T> extractorOfNextValueToBeTested) {
+        Builder getNextValueToBeTested(final Function<T, T> extractorOfNextValueToBeTested) {
             this.extractorOfNextValueToBeTested = extractorOfNextValueToBeTested;
             return this;
         }
 
-        Builder withStringToConcatenate(final String stringToConcatenate) {
+        Builder concatenatingWith(final String stringToConcatenate) {
             this.stringToConcatenate = stringToConcatenate;
             return this;
         }
 
-        Builder withValueToBeTested(final T valueToBeTested) {
+        Builder havingInitialValueToBeTested(final T valueToBeTested) {
             this.valueToBeTested = valueToBeTested;
             return this;
         }
 
-        CondicionalConcatenator createCondicionalConcatenator() {
+        CondicionalConcatenator build() {
             return new CondicionalConcatenator<>(this);
         }
     }

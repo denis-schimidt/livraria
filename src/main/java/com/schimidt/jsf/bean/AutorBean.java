@@ -3,6 +3,7 @@ package com.schimidt.jsf.bean;
 import com.schimidt.jsf.dao.DAO;
 import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.infra.RedirectView;
+import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
 import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
@@ -16,7 +17,7 @@ public class AutorBean {
         return autor;
     }
 
-    public RedirectView gravar() {
+    public View gravar() {
         em.getTransaction().begin();
 
         System.out.println("Gravando autor " + this.autor.getNome());

@@ -1,14 +1,14 @@
 package com.schimidt.jsf.bean;
 
-import com.google.common.base.MoreObjects;
 import com.schimidt.jsf.dao.DAO;
 import com.schimidt.jsf.dao.JPAUtil;
+import com.schimidt.jsf.infra.RedirectView;
+import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.modelo.Livro;
 import com.schimidt.jsf.service.LivroService;
 import com.schimidt.jsf.validator.IsbnValidator;
-import java.io.Serializable;
-import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -16,6 +16,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.persistence.EntityManager;
+import java.io.Serializable;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -40,7 +42,7 @@ public class LivroBean implements Serializable {
         this.livro = new Livro();
     }
 
-    public void associarAutor(){
+    public void associarAutor() {
         final EntityManager em = JPAUtil.newEntityManager();
         final Autor autor = em.find(Autor.class, autorId);
         livro.adicionaAutor(autor);
@@ -49,19 +51,19 @@ public class LivroBean implements Serializable {
         em.close();
     }
 
-    public void setAutorId(Integer autorId){
+    public void setAutorId(Integer autorId) {
         this.autorId = autorId;
     }
 
-    public List<Autor> getAutores(){
+    public List<Autor> getAutores() {
         return livro.getAutores();
     }
 
-    public Integer getAutorId(){
+    public Integer getAutorId() {
         return this.autorId;
     }
 
-    public List<Autor> listarAutoresNaoSelecionados(){
+    public List<Autor> listarAutoresNaoSelecionados() {
         EntityManager em = JPAUtil.newEntityManager();
         List<Autor> autoresNaoSelecionados = new DAO<Autor>(Autor.class, em).listaTodos();
 
@@ -72,28 +74,19 @@ public class LivroBean implements Serializable {
         return autoresNaoSelecionados;
     }
 
-    public List<Livro> getLivros(){
+    public List<Livro> getLivros() {
         final EntityManager em = JPAUtil.newEntityManager();
-        final List<Livro> livros = new DAO<Livro>(Livro.class, em).listaTodos();
+        final List<Livro> livros = new DAO<>(Livro.class, em).listaTodos();
         em.close();
 
         return livros;
     }
 
     public void validarIsbn(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
-        new IsbnValidator().validate(facesContext,uiComponent,value);
+        new IsbnValidator().validate(facesContext, uiComponent, value);
     }
 
-    public String cadastrarNovoAutor(){
-        return "autor?faces-redirect=true";
-    }
-
-    @Override
-    public String toString() {
-//        return new org.apache.commons.lang3.builder.ToStringBuilder(this)
-//                .append("livro", livro)
-//                .append("autorId", autorId)
-//                .toString();
-        return null;
+    public View cadastrarNovoAutor() {
+        return new RedirectView("autor");
     }
 }

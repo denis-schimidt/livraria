@@ -1,16 +1,14 @@
 package com.schimidt.jsf.infra;
 
 import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
-import static com.google.common.base.MoreObjects.toStringHelper;
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
+
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
-public class ForwardView {
-    private final Function<Integer, Integer> NEXT_VALUE_FUNCTION = counter -> counter + 1;
+public class ForwardView implements View {
+    private static final int INITIAL_VALUE_TO_BE_TESTED = 0;
+    private static final Function<Integer, Integer> NEXT_VALUE_FUNCTION = counter -> counter + 1;
     private String viewName;
     private Map<String, String> urlParams;
     private CondicionalConcatenator<Integer> condicionalUrlConcatenator;
@@ -23,27 +21,37 @@ public class ForwardView {
         this.viewName = viewName;
         this.urlParams = urlParams;
 
-        final Predicate<Integer> conditionToConcatenate = counter -> urlParams.keySet().size() >= counter && counter > 1;
+        Predicate<Integer> conditionToConcatenate = counter -> urlParams.keySet().size() >= counter && counter > 1;
 
         this.condicionalUrlConcatenator = CondicionalConcatenator.builder()
-                .withCondition(conditionToConcatenate)
-                .withExtractorOfNextValueToBeTested(NEXT_VALUE_FUNCTION)
-                .withStringToConcatenate("&")
-                .withValueToBeTested(0)
-                .createCondicionalConcatenator();
+                .onCondition(conditionToConcatenate)
+                .getNextValueToBeTested(NEXT_VALUE_FUNCTION)
+                .concatenatingWith(AMPERSAND)
+                .havingInitialValueToBeTested(INITIAL_VALUE_TO_BE_TESTED)
+                .build();
     }
 
     @Override
     public String toString() {
+        final StringBuilder urlBuilder = new StringBuilder(this.viewName);
 
-        final MoreObjects.ToStringHelper urlBuilder = toStringHelper(this.viewName);
+        if(hasQueryParameter()){
+            urlBuilder.append(QUESTION_MARK);
+        }
 
         urlParams.entrySet()
             .forEach(entry -> {
                 condicionalUrlConcatenator.concatenateStringDependingOnCondition(urlBuilder);
-                urlBuilder.add(entry.getKey(), entry.getValue());
+                urlBuilder.append(entry.getKey())
+                    .append(EQUAL_SIGN)
+                    .append(entry.getValue());
             });
 
         return urlBuilder.toString();
+    }
+
+    @Override
+    public boolean hasQueryParameter() {
+        return !urlParams.isEmpty();
     }
 }

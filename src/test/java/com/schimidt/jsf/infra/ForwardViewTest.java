@@ -1,17 +1,29 @@
 package com.schimidt.jsf.infra;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class ForwardViewTest {
 
-    private ForwardView forwardView = new ForwardView("livro", Map.of("id", "1", "autor", "fulano"));
+    private View view;
 
-    //@Test
+    @Before
+    public void setUp(){
+        Map<String, String> urlParameters = new LinkedHashMap();
+        urlParameters.put("id", "1");
+        urlParameters.put("autor", "fulano");
+
+        view = new ForwardView("livro", urlParameters);
+    }
+
+    @Test
     public void shouldGenerateUrlWithParameters () throws Exception {
-        final String url = forwardView.toString();
+        final String url = view.toString();
 
         assertThat(url, equalTo("livro?id=1&autor=fulano"));
     }
