@@ -14,8 +14,9 @@ import java.util.List;
 
 @ManagedBean
 @ViewScoped
-public class AutorBean implements Serializable{
+public class AutorBean implements Serializable {
     private Autor autor = new Autor();
+    private Integer autorId;
 
     public Autor getAutor() {
         return autor;
@@ -42,7 +43,7 @@ public class AutorBean implements Serializable{
         autor = new Autor();
     }
 
-    public View cadastrarLivroComAutor(){
+    public View cadastrarLivroComAutor() {
         return new RedirectView("livro");
     }
 
@@ -69,6 +70,23 @@ public class AutorBean implements Serializable{
         } finally {
             em.close();
         }
+    }
+
+    public void pesquisarAutor() {
+
+        if (autorId != null) {
+            EntityManager em = new JPAUtil().newEntityManager();
+            this.autor = new DAO<Autor>(Autor.class, em).buscaPorId(autorId);
+            em.close();
+        }
+    }
+
+    public void setAutorId(Integer autorId) {
+        this.autorId = autorId;
+    }
+
+    public Integer getAutorId() {
+        return autorId;
     }
 
     public void setAutor(Autor autor) {
