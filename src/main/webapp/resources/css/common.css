@@ -1,0 +1,17 @@
+.centraliza {
+    text-align: center;
+}
+
+.corpo-fieldset {
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+}
+
+.email{
+    width: 20em;
+}
+
+.barra-commando{
+    margin-top: 1.3em;
+}

@@ -10,9 +10,6 @@
         <f:viewAction action="#{autorBean.pesquisarAutor}"/>
     </f:metadata>
 
-    <ui:define name="css-adicional">
-        <h:outputStylesheet library="css" name="livro.css"/>
-    </ui:define>
     <ui:define name="tituloCorpoPagina">
         Cadastro de Autores
     </ui:define>
@@ -27,14 +24,24 @@
                         <f:validateLength minimum="5" maximum="40" for="nome"/>
                     </h:inputText>
                     <h:message for="nome"/>
+
+                    <h:outputLabel value="E-mail:" for="email"/>
+                    <h:inputText id="email" value="#{autorBean.autor.email}" styleClass="email"
+                                 validatorMessage="O email do autor deve ter entre 5 e 50 caracteres.">
+                        <f:validateLength minimum="5" maximum="50" for="email"/>
+                        <f:passThroughAttribute name="type" value="email"/>
+                    </h:inputText>
+                    <h:message for="email"/>
                 </h:panelGrid>
             </fieldset>
-            <br/>
-            <h:commandButton value="Gravar" action="#{autorBean.gravar}" style="margin-right: 0.5%"/>
-            <h:commandButton value="Novo Livro" action="#{autorBean.cadastrarLivroComAutor}" immediate="true"/>
+            <div class="barra-commando">
+                <h:commandButton value="Gravar" action="#{autorBean.gravar}" style="margin-right: 0.5%"/>
+                <h:commandButton value="Novo Livro" action="#{autorBean.cadastrarLivroComAutor}" immediate="true"/>
+            </div>
         </h:form>
 
         <br/>
+
         <h:form id="tabelaAutores">
             <h:dataTable value="#{autorBean.listarTodos()}" var="autor">
                 <h:column>
@@ -42,6 +49,12 @@
                         Autores
                     </f:facet>
                     <h:outputText value="#{autor.nome}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        E-mail
+                    </f:facet>
+                    <h:outputText value="#{autor.email}"/>
                 </h:column>
                 <h:column>
                     <div class="centraliza">

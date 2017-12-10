@@ -1,17 +1,21 @@
 package com.schimidt.jsf.modelo;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
 public class Autor implements Serializable{
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+    @Column(nullable = false)
 	private String nome;
+
+    @Column(nullable = false, unique = true)
+	private String email;
 
 	public String getNome() {
 		return nome;
@@ -52,6 +56,15 @@ public class Autor implements Serializable{
 		return com.google.common.base.MoreObjects.toStringHelper(this)
 				.add("id", id)
 				.add("nome", nome)
+				.add("email",email)
 				.toString();
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
