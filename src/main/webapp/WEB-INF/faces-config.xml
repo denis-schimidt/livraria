@@ -7,5 +7,6 @@
 
     <lifecycle>
         <!--<phase-listener>com.schimidt.jsf.infra.LoggerPhaseListener</phase-listener>-->
+        <phase-listener>com.schimidt.jsf.infra.AutorizacaoListener</phase-listener>
     </lifecycle>
 </faces-config>
