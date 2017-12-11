@@ -8,10 +8,26 @@
     border-color: grey;
 }
 
-.email{
+.email {
     width: 20em;
 }
 
-.barra-commando{
+.barra-commando {
     margin-top: 1.3em;
+}
+
+.usuario-logado {
+    text-align: right;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.ui-widget-content tr {
+    border: none !important;
+}
+
+.ui-widget-content td {
+    border: none !important;
 }

@@ -2,31 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <ui:composition template="_template.xhtml">
 
-    <ui:define name="tituloCorpoPagina">
-        Login
-    </ui:define>
+    <ui:define name="tituloCorpoPagina"/>
 
     <ui:define name="corpo">
+        <p:messages globalOnly="true"/>
         <h:form id="login">
-            <fieldset>
-                <legend>Login</legend>
-                <h:panelGrid columns="3">
-                    <h:outputLabel value="Email:" for="email"/>
-                    <h:inputText id="email" value="#{loginBean.usuario.email}" required="true" pt:type="email" pt:placeholder="Entre com seu email" styleClass="email"/>
-                    <h:message for="email" id="messageEmail"/>
+            <p:fieldset legend="Login">
+                <p:panelGrid columns="3">
+                    <p:outputLabel value="Email:" for="email"/>
+                    <p:inputText id="email" value="#{loginBean.usuario.email}" required="true" pt:type="email" pt:placeholder="Entre com seu email"
+                                 styleClass="email"/>
+                    <p:message for="email" id="messageEmail"/>
 
-                    <h:outputLabel value="Senha:" for="senha"/>
-                    <h:inputSecret id="senha" value="#{loginBean.usuario.senha}" required="true"/>
-                    <h:message for="senha" id="messageSenha"/>
+                    <p:outputLabel value="Senha:" for="senha"/>
+                    <p:password id="senha" value="#{loginBean.usuario.senha}" required="true" feedback="true" promptLabel="Digite a sua senha"
+                                weakLabel="Fraca"
+                                goodLabel="Bom" strongLabel="Forte"/>
+                    <p:message for="senha" id="messageSenha"/>
 
-                    <h:commandButton value="Efetuar Login" action="#{loginBean.efetuaLogin}" styleClass="barra-commando"/>
-                </h:panelGrid>
-            </fieldset>
+                    <p:commandButton value="Efetuar Login" action="#{loginBean.efetuaLogin}" styleClass="barra-commando" ajax="false"/>
+                </p:panelGrid>
+            </p:fieldset>
         </h:form>
     </ui:define>
 </ui:composition>

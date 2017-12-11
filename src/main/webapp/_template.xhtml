@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
@@ -15,8 +16,25 @@
 
 <h:body>
     <div id="cabecalho">
-        <!--<h:graphicImage library="img" title="Logotipo Caelum" name="logo.png" width="15%" />-->
-        <h:graphicImage title="Logotipo Caelum" url="http://sergiolopes.github.io/css3-experimentos/logo-caelum-css3/caelum-logo.png" width="15%" />
+        <h:panelGrid columns="2" width="100%">
+            <h:column>
+                <h:graphicImage title="Logotipo Caelum"
+                                url="http://sergiolopes.github.io/css3-experimentos/logo-caelum-css3/caelum-logo.png"
+                                width="20%"/>
+            </h:column>
+            <h:column>
+                <h:form id="formDeslogar" rendered="#{sessionScope.usuarioLogado!=null}">
+                    <div class="usuario-logado">
+                        <span class="label">
+                            Usuário:
+                        </span>
+                        <h:outputText value="#{sessionScope.usuarioLogado.email}"/>
+                        &nbsp;|&nbsp;
+                        <h:commandLink action="#{loginBean.deslogar()}" value="Deslogar"/>
+                    </div>
+                </h:form>
+            </h:column>
+        </h:panelGrid>
         <h1>
             <ui:insert name="tituloCorpoPagina">Livraria</ui:insert>
         </h1>
