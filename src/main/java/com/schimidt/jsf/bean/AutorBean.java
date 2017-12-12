@@ -5,9 +5,12 @@ import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.infra.RedirectView;
 import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
+import com.schimidt.jsf.validator.EmailValidator;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
@@ -91,5 +94,9 @@ public class AutorBean implements Serializable {
 
     public void setAutor(Autor autor) {
         this.autor = autor;
+    }
+
+    public void validateEmail(FacesContext context, UIComponent uiComponent, Object value) {
+        EmailValidator.validateEmailUsing(uiComponent, value);
     }
 }

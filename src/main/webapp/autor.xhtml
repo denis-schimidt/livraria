@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="_template.xhtml">
@@ -11,32 +12,32 @@
     </f:metadata>
 
     <ui:define name="tituloCorpoPagina">
-        Cadastro de Autores
+       <p:outputPanel>Cadastro de Autores</p:outputPanel>
     </ui:define>
     <ui:define name="corpo">
         <h:form>
-            <fieldset>
-                <legend>Dados do Autor</legend>
+            <p:fieldset legend="Dados do Autor">
                 <h:panelGrid columns="3">
-                    <h:outputLabel value="Nome:" for="nome"/>
-                    <h:inputText id="nome" value="#{autorBean.autor.nome}"
+                    <p:outputLabel value="Nome:" for="nome"/>
+                    <p:inputText id="nome" value="#{autorBean.autor.nome}"
                                  validatorMessage="O nome do autor deve ter entre 5 e 40 caracteres.">
                         <f:validateLength minimum="5" maximum="40" for="nome"/>
-                    </h:inputText>
-                    <h:message for="nome"/>
+                        <f:ajax event="blur" render="messageNome"/>
+                    </p:inputText>
+                    <p:message id="messageNome" for="nome"/>
 
-                    <h:outputLabel value="E-mail:" for="email"/>
-                    <h:inputText id="email" value="#{autorBean.autor.email}" styleClass="email"
-                                 validatorMessage="O email do autor deve ter entre 5 e 50 caracteres.">
-                        <f:validateLength minimum="5" maximum="50" for="email"/>
-                        <f:passThroughAttribute name="type" value="email"/>
-                    </h:inputText>
-                    <h:message for="email"/>
+                    <p:outputLabel value="E-mail:" for="email"/>
+                    <p:inputText id="email" value="#{autorBean.autor.email}" styleClass="email" validator="#{autorBean.validateEmail}">
+                        <f:attribute name="type" value="email"/>
+                        <f:passThroughAttribute name="placeholder" value="E-mail do autor"/>
+                        <f:ajax event="blur" render="messageEmail"/>
+                    </p:inputText>
+                    <p:message for="email" id="messageEmail"/>
                 </h:panelGrid>
-            </fieldset>
+            </p:fieldset>
             <div class="barra-commando">
-                <h:commandButton value="Gravar" action="#{autorBean.gravar}" style="margin-right: 0.5%"/>
-                <h:commandButton value="Novo Livro" action="#{autorBean.cadastrarLivroComAutor}" immediate="true"/>
+                <p:commandButton value="Gravar" action="#{autorBean.gravar}" style="margin-right: 0.5%" process="@form" update="@form :tabelaAutores"/>
+                <p:commandButton value="Novo Livro" action="#{autorBean.cadastrarLivroComAutor}" immediate="true"/>
             </div>
         </h:form>
 
