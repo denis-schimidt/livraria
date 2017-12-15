@@ -15,7 +15,7 @@
        <p:outputPanel>Cadastro de Autores</p:outputPanel>
     </ui:define>
     <ui:define name="corpo">
-        <h:form>
+        <h:form id="formCadastroAutor">
             <p:fieldset legend="Dados do Autor">
                 <h:panelGrid columns="3">
                     <p:outputLabel value="Nome:" for="nome"/>
@@ -44,37 +44,19 @@
         <br/>
 
         <h:form id="tabelaAutores">
-            <h:dataTable value="#{autorBean.listarTodos()}" var="autor">
-                <h:column>
-                    <f:facet name="header">
-                        Autores
-                    </f:facet>
-                    <h:outputText value="#{autor.nome}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        E-mail
-                    </f:facet>
-                    <h:outputText value="#{autor.email}"/>
-                </h:column>
-                <h:column>
-                    <div class="centraliza">
-                        <f:facet name="header">Remover</f:facet>
-                        <h:commandLink action="#{autorBean.remover(autor)}" title="Clique aqui para excluir o autor">
-                            <h:graphicImage library="img" name="delete.png"/>
-                        </h:commandLink>
-                    </div>
-                </h:column>
-                <h:column>
-                    <div class="centraliza">
-                        <f:facet name="header">Alterar</f:facet>
-                        <h:commandLink title="Clique aqui para carregar o autor para atualizá-lo">
-                            <f:setPropertyActionListener value="#{autor}" target="#{autorBean.autor}"/>
-                            <h:graphicImage library="img" name="atualiza.png"/>
-                        </h:commandLink>
-                    </div>
-                </h:column>
-            </h:dataTable>
+            <p:dataList value="#{autorBean.listarTodos()}" var="autor" type="unordered" itemType="none" paginator="true"
+                        paginatorAlwaysVisible="false" rows="15" paginatorPosition="bottom">
+                <f:facet name="header">
+                    Autores
+                </f:facet>
+                <p:commandLink action="#{autorBean.remover(autor)}" title="Clique aqui para excluir o autor" styleClass="ui-icon ui-icon-trash"
+                               update="@form" style="float:left;margin-right:10px"/>
+                <p:commandLink title="Clique aqui para carregar o autor para atualizá-lo" styleClass="ui-icon ui-icon-pencil"
+                               update="@form :formCadastroAutor" style="float:left;margin-right:10px">
+                    <f:setPropertyActionListener value="#{autor}" target="#{autorBean.autor}"/>
+                </p:commandLink>
+                #{autor.nome} - #{autor.email}
+            </p:dataList>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -31,3 +31,7 @@
 .ui-widget-content td {
     border: none !important;
 }
+
+.ui-datalist-nobullets{
+    -webkit-padding-start: 1em;
+}
