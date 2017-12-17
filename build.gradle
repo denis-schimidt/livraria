@@ -19,6 +19,7 @@ dependencies {
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:6.0.5.Final'
     compile 'org.hibernate:hibernate-entitymanager:5.2.12.Final'
+    compile 'org.hibernate:hibernate-ehcache:5.2.12.Final'
     providedCompile 'org.jboss.spec.javax.faces:jboss-jsf-api_2.2_spec:2.2.13'
     providedCompile 'javax.xml.bind:jaxb-api:2.3.0'
     runtime  'mysql:mysql-connector-java:6.0.6'

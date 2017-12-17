@@ -35,3 +35,39 @@
 .ui-datalist-nobullets{
     -webkit-padding-start: 1em;
 }
+
+.ui-selectonemenu{
+    display: inline-grid!important;
+}
+
+.data-table-campo-reduzido{
+    text-align: center;
+    width: 5em!important;
+}
+
+.valor-monetario{
+    width: 10em;
+    text-align: right;
+}
+
+.isbn{
+    text-align: center;
+    width: 10em;
+}
+
+.data-hora{
+    text-align: center;
+    width: 10em;
+}
+
+.ui-widget{
+    font-size: 1em;
+}
+
+.ui-fieldset-legend{
+    padding: 0.4em 0.6em!important;
+}
+
+ul li{
+    margin-bottom: 0.5em;
+}

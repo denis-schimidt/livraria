@@ -55,7 +55,7 @@
                                update="@form :formCadastroAutor" style="float:left;margin-right:10px">
                     <f:setPropertyActionListener value="#{autor}" target="#{autorBean.autor}"/>
                 </p:commandLink>
-                #{autor.nome} - #{autor.email}
+                <h:outputText value="#{autor.nome} - #{autor.email}" style="margin-bottom-bottom:4em"/>
             </p:dataList>
         </h:form>
     </ui:define>

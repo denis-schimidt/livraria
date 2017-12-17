@@ -2,11 +2,13 @@ package com.schimidt.jsf.dao;
 
 import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.modelo.Livro;
+import com.schimidt.jsf.modelo.Usuario;
+
+import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import javax.persistence.EntityManager;
 
 public class PopulaBanco {
 
@@ -55,6 +57,8 @@ public class PopulaBanco {
 		Livro flor = geraLivro("978-8-53-592569-9",
 				"Dona Flor e Seus Dois Maridos", "01/01/1966", 18.90, amado);
 
+		Usuario usuario = new Usuario("fulano@elo7.com", "123");
+		em.persist(usuario);
 		em.persist(capitaes);
 		em.persist(flor);
 

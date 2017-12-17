@@ -1,10 +1,13 @@
 package com.schimidt.jsf.modelo;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
-@Table(name = "usuario", uniqueConstraints = {@UniqueConstraint(name ="email_contraint", columnNames = {"email"})})
+@Table(name = "usuario", uniqueConstraints = {@UniqueConstraint(name = "email_contraint", columnNames = {"email"})})
 public class Usuario implements Serializable {
 
     @Id
@@ -18,7 +21,8 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
     public Integer getId() {
         return id;

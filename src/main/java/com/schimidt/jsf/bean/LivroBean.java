@@ -24,6 +24,7 @@ import java.util.List;
 public class LivroBean implements Serializable {
     private Livro livro = new Livro();
     private Integer autorId;
+    private List<Livro> livros;
 
     public Livro getLivro() {
         return livro;
@@ -38,7 +39,9 @@ public class LivroBean implements Serializable {
             return;
         }
 
+
         new LivroService().salvarLivroComAutores(livro);
+        atualizaListaLivros();
         this.livro = new Livro();
     }
 
@@ -74,11 +77,18 @@ public class LivroBean implements Serializable {
     }
 
     public List<Livro> getLivros() {
-        final EntityManager em = JPAUtil.newEntityManager();
-        final List<Livro> livros = new DAO<>(Livro.class, em).listaTodos();
-        em.close();
+
+        if (livros == null) {
+            atualizaListaLivros();
+        }
 
         return livros;
+    }
+
+    private void atualizaListaLivros() {
+        final EntityManager em = JPAUtil.newEntityManager();
+        this.livros = new DAO<>(Livro.class, em).listaTodos();
+        em.close();
     }
 
     public void validarIsbn(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {

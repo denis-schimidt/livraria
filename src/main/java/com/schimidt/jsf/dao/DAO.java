@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
 public class DAO<T> {
@@ -40,7 +41,10 @@ public class DAO<T> {
         CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
         query.select(query.from(classe));
 
-        return em.createQuery(query).getResultList();
+        TypedQuery<T> typedQuery = em.createQuery(query);
+        typedQuery.setHint("org.hibernate.cacheable", "true");
+
+        return typedQuery.getResultList();
     }
 
     public T buscaPorId(Integer id) {
