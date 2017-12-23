@@ -1,11 +1,15 @@
 package com.schimidt.jsf.dao;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.SortOrder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.*;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 public class DAO<T> {
 
@@ -58,9 +62,24 @@ public class DAO<T> {
         return (int) result;
     }
 
-    public List<T> listaTodosPaginada(int firstResult, int maxResults) {
-        CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
-        query.select(query.from(classe));
+    public List<T> listaTodosPaginada(int firstResult, int maxResults, String campoOrdenacao, SortOrder sentidoOrdenacao, Map<String, Object> filtros) {
+        final CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(classe);
+        final Root<T> from = query.from(classe);
+        query.select(from);
+
+        if (filtros != null) {
+            final List<Predicate> predicates = filtros.entrySet()
+                    .stream()
+                    .map(entry -> builder.like(from.get(entry.getKey()), "%" + entry.getValue() + "%"))
+                    .collect(toList());
+            query.where(predicates.toArray(new Predicate[0]));
+        }
+
+        if (StringUtils.isNotBlank(campoOrdenacao) && sentidoOrdenacao != null) {
+            final Path<Object> pathCampoOrdenacao = from.get(campoOrdenacao);
+            query.orderBy("ASCENDING".equals(sentidoOrdenacao.name()) ? builder.asc(pathCampoOrdenacao) : builder.desc(pathCampoOrdenacao));
+        }
 
         return em.createQuery(query)
                 .setFirstResult(firstResult)

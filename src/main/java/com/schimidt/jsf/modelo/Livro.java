@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Entity
+@Entity(name = "livro")
 @Table(name = "livro")
 public class Livro implements Serializable {
 
@@ -24,6 +24,9 @@ public class Livro implements Serializable {
     private Double preco;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Calendar dataLancamento;
+
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -85,6 +88,14 @@ public class Livro implements Serializable {
 
     public void remover(Autor autor) {
         this.autores.remove(autor);
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
     @Override

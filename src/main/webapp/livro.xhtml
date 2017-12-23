@@ -33,13 +33,19 @@
                         <p:ajax event="blur" render="messages"/>
                     </p:inputMask>
 
+                    <p:outputLabel value="Genero:" for="genero"/>
+                    <p:selectOneMenu id="genero" value="#{livroBean.livro.genero}" required="true">
+                        <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+                        <f:selectItems value="#{livroBean.generos}"/>
+                    </p:selectOneMenu>
+
                     <p:outputLabel value="Preço:" for="preco"/>
                     <p:inputNumber id="preco" value="#{livroBean.livro.preco}" minValue="0" decimalPlaces="2" symbol="R$ " required="true"
                                    maxValue="30000" validatorMessage="O preço deve estar entre R$ 0,00 e R$ 30.000,00"/>
 
                     <p:outputLabel value="Data de Lançamento:" for="dataLancamento"/>
                     <p:calendar id="dataLancamento" value="#{livroBean.livro.dataLancamento.time}" pattern="dd/MM/yyyy HH:mm" mask="true"
-                                required="true" showOtherMonths="true" navigator="true" locale="pt_BR" />
+                                required="true" showOtherMonths="true" navigator="true" locale="pt_BR"/>
                 </p:panelGrid>
             </p:fieldset>
 
@@ -72,25 +78,37 @@
         </h:form>
 
         <h:form id="tabelaLivrosForm">
-            <p:dataTable id="tabelaLivros" value="#{livroBean.livros}" var="livro" paginator="true" paginatorAlwaysVisible="false"
+            <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true" paginatorAlwaysVisible="false"
                          emptyMessage="Nenhum livro" rows="5" paginatorPosition="bottom"
-                         style="margin-top: 15px;">
+                         style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
                 <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" filterMatchMode="startsWith">
                     <h:outputText value="#{livro.titulo}"/>
+                </p:column>
+
+                <p:column headerText="Genero" sortBy="#{livro.genero}" filterBy="#{livro.genero}" filterMatchMode="equals">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tabelaLivrosWidget').filter()">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{livroBean.generos}" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{livro.genero}"/>
                 </p:column>
 
                 <p:column headerText="ISBN" sortBy="#{livro.isbn}" filterBy="#{livro.isbn}" styleClass="isbn" filterMatchMode="startsWith">
                     <h:outputText value="#{livro.isbn}"/>
                 </p:column>
 
-                <p:column headerText="Preço" sortBy="#{livro.preco}" styleClass="valor-monetario" filterBy="#{livro.preco}" filterMatchMode="contains">
+                <p:column headerText="Preço" sortBy="#{livro.preco}" styleClass="valor-monetario" filterBy="#{livro.preco}"
+                          filterFunction="#{livroBean.precoEhMenor}">
                     <h:outputText value="#{livro.preco}">
                         <f:convertNumber type="currency" currencySymbol="R$" pattern="R$ #0.00" locale="pt_BR"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Data" sortBy="#{livro.dataLancamento.time}" filterBy="#{livro.dataLancamento.time}" styleClass="data-hora" filterMatchMode="contains">
+                <p:column headerText="Data" sortBy="#{livro.dataLancamento.time}" filterBy="#{livro.dataLancamento.time}" styleClass="data-hora"
+                          filterMatchMode="contains">
                     <h:outputText value="#{livro.dataLancamento.time}">
                         <f:convertDateTime pattern="dd/MM/yyyy hh:mm"/>
                     </h:outputText>

@@ -5,9 +5,12 @@ import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.infra.RedirectView;
 import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
+import com.schimidt.jsf.modelo.Genero;
 import com.schimidt.jsf.modelo.Livro;
+import com.schimidt.jsf.modelo.LivroDataModel;
 import com.schimidt.jsf.service.LivroService;
 import com.schimidt.jsf.validator.IsbnValidator;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -17,7 +20,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @ManagedBean
 @ViewScoped
@@ -25,6 +30,7 @@ public class LivroBean implements Serializable {
     private Livro livro = new Livro();
     private Integer autorId;
     private List<Livro> livros;
+    private LivroDataModel livroDataModel = new LivroDataModel();
 
     public Livro getLivro() {
         return livro;
@@ -39,10 +45,13 @@ public class LivroBean implements Serializable {
             return;
         }
 
-
         new LivroService().salvarLivroComAutores(livro);
         atualizaListaLivros();
         this.livro = new Livro();
+    }
+
+    public List<Genero> getGeneros(){
+        return Arrays.asList(Genero.values());
     }
 
     public void associarAutor() {
@@ -89,6 +98,31 @@ public class LivroBean implements Serializable {
         final EntityManager em = JPAUtil.newEntityManager();
         this.livros = new DAO<>(Livro.class, em).listaTodos();
         em.close();
+    }
+
+    public boolean precoEhMenor(Object valorColuna, Object filtroDigitado, Locale locale) {
+
+        if (StringUtils.isBlank((String) filtroDigitado)) {
+            return true;
+        }
+
+        if (valorColuna == null) {
+            return false;
+        }
+
+        try {
+            Double precoDigitado = Double.valueOf(filtroDigitado.toString().trim());
+            Double precoColuna = (Double) valorColuna;
+
+            return precoColuna.compareTo(precoDigitado) < 0;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public LivroDataModel getLivroDataModel() {
+        return livroDataModel;
     }
 
     public void validarIsbn(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
