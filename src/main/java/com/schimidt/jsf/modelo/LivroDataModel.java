@@ -1,6 +1,5 @@
 package com.schimidt.jsf.modelo;
 
-import com.schimidt.jsf.dao.DAO;
 import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.dao.LivroDao;
 import org.primefaces.model.LazyDataModel;
@@ -12,19 +11,17 @@ import java.util.Map;
 
 public class LivroDataModel extends LazyDataModel<Livro> {
 
-    public LivroDataModel() {
-        final EntityManager em = JPAUtil.newEntityManager();
-        DAO<Livro> dao = new DAO<>(Livro.class, em);
-        super.setRowCount(dao.contaTodos());
-        em.close();
-    }
-
     @Override
-    public List<Livro> load(int inicio, int quantidade, String campoOrdenacao, SortOrder sentidoOrdenacao, Map<String, Object> filtros) {
-        final EntityManager em = JPAUtil.newEntityManager();
+    public List<Livro> load(int first, int pageSize, String campoOrdenacao, SortOrder sentidoOrdenacao, Map<String, Object> filtros) {
+        EntityManager em = JPAUtil.newEntityManager();
         LivroDao dao = new LivroDao(em);
-        List<Livro> livros = dao.listaTodosPaginada(inicio, quantidade, campoOrdenacao, sentidoOrdenacao, filtros);
+        List<Livro> livros = dao.listaTodosPaginada(first, pageSize, campoOrdenacao, sentidoOrdenacao, filtros);
+
+        int totalSize = filtros.isEmpty() ? dao.contaTodos() : dao.contaTodosFiltrado(filtros).intValue();
+        setRowCount(totalSize);
+
         em.close();
+
         return livros;
     }
 }

@@ -15,7 +15,7 @@
     <ui:define name="tituloCorpoPagina"/>
     <ui:define name="corpo">
         <h:form id="formCadastroLivro">
-            <p:messages id="messages"/>
+            <!--<p:messages id="messages"/>-->
             <p:fieldset legend="Dados do Livro">
                 <p:panelGrid columns="2">
 
@@ -60,9 +60,6 @@
                                  action="#{livroBean.associarAutor()}"
                                  process="@this autor" update="autor tabelaAutores"/>
 
-                <p:commandButton style="margin-left: 5px; padding: 0px 3px;" value="Novo autor" title="Novo autor" process="@this"
-                                 action="#{livroBean.cadastrarNovoAutor()}"/>
-
                 <p:dataList value="#{livroBean.autores}" var="autor" id="tabelaAutores" emptyMessage="Nenhum autor" type="unordered"
                             itemType="none" style="margin-top: 5px;">
                     <p:commandLink action="#{livroBean.removerAssociacaoCom(autor)}" title="Clique aqui para excluir o autor"
@@ -78,8 +75,9 @@
         </h:form>
 
         <h:form id="tabelaLivrosForm">
-            <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true" paginatorAlwaysVisible="false"
-                         emptyMessage="Nenhum livro" rows="5" paginatorPosition="bottom"
+            <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true"
+                         draggableColumns="true"
+                         emptyMessage="Nenhum livro" rows="5"
                          style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
                 <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" filterMatchMode="startsWith">
@@ -89,8 +87,8 @@
                 <p:column headerText="Genero" sortBy="#{livro.genero}" filterBy="#{livro.genero}" filterMatchMode="equals">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tabelaLivrosWidget').filter()">
-                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true" />
-                            <f:selectItems value="#{livroBean.generos}" />
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{livroBean.generos}"/>
                         </p:selectOneMenu>
                     </f:facet>
                     <h:outputText value="#{livro.genero}"/>

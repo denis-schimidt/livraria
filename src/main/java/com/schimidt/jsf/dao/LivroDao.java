@@ -15,9 +15,11 @@ import static java.util.stream.Collectors.toList;
 
 public class LivroDao {
     private EntityManager em;
+    private DAO<Livro> genericDao;
 
     public LivroDao(EntityManager em) {
         this.em = em;
+        this.genericDao = new DAO<>(Livro.class, em);
     }
 
     public List<Livro> listaTodosPaginada(int firstResult, int maxResults, String campoOrdenacao, SortOrder sentidoOrdenacao, Map<String, Object>
@@ -44,6 +46,28 @@ public class LivroDao {
                 .setFirstResult(firstResult)
                 .setMaxResults(maxResults)
                 .getResultList();
+    }
+
+    public Long contaTodosFiltrado(Map<String, Object> filtros){
+        final CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        final Root<Livro> from = query.from(Livro.class);
+        query.select(builder.count(from));
+
+        if (filtros != null) {
+            final List<Predicate> predicates = filtros.entrySet()
+                    .stream()
+                    .map(getEntryPredicateFunction(builder, from))
+                    .collect(toList());
+            query.where(predicates.toArray(new Predicate[0]));
+        }
+
+        return em.createQuery(query)
+                .getSingleResult();
+    }
+
+    public int contaTodos() {
+        return genericDao.contaTodos();
     }
 
     private Function<Map.Entry<String, Object>, Predicate> getEntryPredicateFunction(CriteriaBuilder builder, Root<Livro> from) {
