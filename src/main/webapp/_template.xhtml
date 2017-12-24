@@ -35,18 +35,17 @@
 
         <h:form id="formDeslogar" rendered="#{sessionScope.usuarioLogado!=null}">
             <p:menubar>
-                <p:submenu label="Cadastros" icon="ui-icon-document">
+                <p:submenu label="Cadastro" icon="ui-icon-document">
                     <p:menuitem value="Livros" action="livro?faces-redirect=true" icon="fa fa-fw fa-edit"/>
                     <p:separator/>
-                    <p:menuitem value="Autor" action="autor?faces-redirect=true" icon="fa fa-fw fa-edit"/>
+                    <p:menuitem value="Autores" action="autor?faces-redirect=true" icon="fa fa-fw fa-edit"/>
                 </p:submenu>
 
-                <p:submenu label="Resultados" icon="fa fa-bar-chart">
+                <p:submenu label="Resultado" styleClass="label-com-icone" icon="fa fa-bar-chart">
                     <p:menuitem value="Vendas" action="vendas?faces-redirect=true" icon="fa fa-book"/>
                 </p:submenu>
 
-                <p:submenu icon="fa fa-user" label="#{sessionScope.usuarioLogado.email}" rendered="#{sessionScope.usuarioLogado!=null}"
-                           style="margin-left: 3em">
+                <p:submenu icon="fa fa-user" label="#{sessionScope.usuarioLogado.email}" rendered="#{sessionScope.usuarioLogado!=null}">
                     <p:menuitem value="Logout" action="#{loginBean.deslogar}" icon="fa fa-fw fa-sign-out"/>
                 </p:submenu>
             </p:menubar>

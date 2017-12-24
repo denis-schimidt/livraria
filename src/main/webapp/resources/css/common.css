@@ -87,3 +87,11 @@ ul li{
 h1{
     text-align: center;
 }
+
+.ui-menuitem-text{
+    padding-left: 0.1em;
+}
+
+.ui-icon-triangle-1-s{
+    margin-right: 3em;
+}
