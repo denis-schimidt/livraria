@@ -7,15 +7,15 @@ import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.validator.EmailValidator;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class AutorBean implements Serializable {
     private Autor autor = new Autor();
