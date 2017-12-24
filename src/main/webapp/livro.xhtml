@@ -10,14 +10,16 @@
 
 <ui:composition template="_template.xhtml">
     <ui:define name="tituloPaginaHtml">
-        Cadastro do Livro
+        Cadastro de Livros
     </ui:define>
-    <ui:define name="tituloCorpoPagina"/>
+    <ui:define name="tituloCorpoPagina">
+        <p:outputPanel>Cadastro de Livros</p:outputPanel>
+    </ui:define>
     <ui:define name="corpo">
         <h:form id="formCadastroLivro">
             <!--<p:messages id="messages"/>-->
             <p:fieldset legend="Dados do Livro">
-                <p:panelGrid columns="2">
+                <p:panelGrid columns="10">
 
                     <p:outputLabel value="Titulo:" for="titulo"/>
                     <p:inputText id="titulo" value="#{livroBean.livro.titulo}" required="true"
@@ -76,8 +78,8 @@
 
         <h:form id="tabelaLivrosForm">
             <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true"
-                         draggableColumns="true"
-                         emptyMessage="Nenhum livro" rows="5"
+                         draggableColumns="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                         emptyMessage="Nenhum livro" rows="5" resizableColumns="true" selection="10"
                          style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
                 <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" filterMatchMode="startsWith">

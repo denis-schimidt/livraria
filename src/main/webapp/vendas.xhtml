@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template.xhtml">
+
+    <ui:define name="tituloPaginaHtml">
+        Vendas
+    </ui:define>
+    <ui:define name="tituloCorpoPagina">
+        <p:outputPanel>Gráfico de vendas</p:outputPanel>
+    </ui:define>
+    <ui:define name="corpo">
+        <p:chart type="bar" model="#{vendaBean.todasAsVendas}" style="height:300px"/>
+    </ui:define>
+</ui:composition>
+</html>

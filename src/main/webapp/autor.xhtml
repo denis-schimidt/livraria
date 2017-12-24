@@ -10,7 +10,9 @@
         <f:viewParam name="autorId" value="#{autorBean.autorId}"/>
         <f:viewAction action="#{autorBean.pesquisarAutor}"/>
     </f:metadata>
-
+    <ui:define name="tituloPaginaHtml">
+        Cadastro de Autores
+    </ui:define>
     <ui:define name="tituloCorpoPagina">
        <p:outputPanel>Cadastro de Autores</p:outputPanel>
     </ui:define>

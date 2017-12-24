@@ -38,7 +38,9 @@ public class LivroDao {
         }
 
         if (StringUtils.isNotBlank(campoOrdenacao) && sentidoOrdenacao != null) {
-            final Path<Object> pathCampoOrdenacao = from.get(campoOrdenacao);
+            int indicePonto = campoOrdenacao.indexOf(".");
+            Path<Object> pathCampoOrdenacao = indicePonto > 0 ? from.get(campoOrdenacao.substring(0, indicePonto)) : from.get(campoOrdenacao);
+
             query.orderBy("ASCENDING".equals(sentidoOrdenacao.name()) ? builder.asc(pathCampoOrdenacao) : builder.desc(pathCampoOrdenacao));
         }
 
@@ -48,7 +50,7 @@ public class LivroDao {
                 .getResultList();
     }
 
-    public Long contaTodosFiltrado(Map<String, Object> filtros){
+    public Long contaTodosFiltrado(Map<String, Object> filtros) {
         final CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
         final Root<Livro> from = query.from(Livro.class);

@@ -71,3 +71,19 @@
 ul li{
     margin-bottom: 0.5em;
 }
+
+.form-escolha-estilo{
+    display: inline-flex;
+    position: absolute;
+    right: 0.5em;
+    margin-top: 2em;
+}
+
+.label-estilo{
+    margin-top: 0.3em;
+    padding-right: 0.5em;
+}
+
+h1{
+    text-align: center;
+}
