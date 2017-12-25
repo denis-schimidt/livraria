@@ -4,6 +4,7 @@ import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.modelo.Genero;
 import com.schimidt.jsf.modelo.Livro;
 import com.schimidt.jsf.modelo.Usuario;
+import org.jboss.weld.SimpleCDI;
 
 import javax.persistence.EntityManager;
 import java.text.ParseException;
@@ -14,8 +15,9 @@ import java.util.Date;
 public class PopulaBanco {
 
 	public static void main(String[] args) {
+		SimpleCDI cdi = new SimpleCDI();
 
-		EntityManager em = new JPAUtil().newEntityManager();
+		EntityManager em = cdi.getBeanManager().instance().select(EntityManager.class).get();
 
 		em.getTransaction().begin();
 
@@ -65,7 +67,6 @@ public class PopulaBanco {
 
 		em.getTransaction().commit();
 		em.close();
-
 	}
 
 	private static Autor geraAutor(String nome, String email) {

@@ -1,19 +1,24 @@
 package com.schimidt.jsf.bean;
 
-import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.dao.UsuarioDao;
 import com.schimidt.jsf.modelo.Usuario;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class LoginBean implements Serializable {
-    private Usuario usuario = new Usuario();
+    private static final long serialVersionUID = -3043371408565301236L;
+
+    @Inject
+    private Usuario usuario;
+    @Inject
+    private UsuarioDao usuarioDao;
 
     public Usuario getUsuario() {
         return usuario;
@@ -24,8 +29,7 @@ public class LoginBean implements Serializable {
 
         System.out.println("Fazendo login do usuário " + this.usuario.getEmail());
 
-        return new UsuarioDao(JPAUtil.newEntityManager())
-                .obterUsuarioPor(usuario)
+        return usuarioDao.obterUsuarioPor(usuario)
                 .map(usuario -> {
                     context.getExternalContext().getSessionMap().put("usuarioLogado", usuario);
                     return "livro?faces-redirect=true";

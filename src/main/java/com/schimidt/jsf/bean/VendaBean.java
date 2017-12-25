@@ -1,21 +1,25 @@
 package com.schimidt.jsf.bean;
 
 import com.schimidt.jsf.dao.DAO;
-import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.modelo.Livro;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.util.Random;
 
-@ManagedBean
+@Named
 @ViewScoped
-public class VendaBean {
+public class VendaBean implements Serializable {
+    private static final long serialVersionUID = 3124911786637655200L;
+
+    @Inject
+    private DAO<Livro> dao;
 
     public BarChartModel getTodasAsVendas() {
         BarChartModel model = new BarChartModel();
@@ -24,9 +28,6 @@ public class VendaBean {
 
         ChartSeries seriesLivrosPenultimoAno = new ChartSeries();
         ChartSeries seriesLivrosAnoAtual = new ChartSeries();
-
-        EntityManager entityManager = JPAUtil.newEntityManager();
-        DAO<Livro> dao = new DAO<>(Livro.class, entityManager);
 
         Random random = new Random(1234);
 
@@ -39,15 +40,12 @@ public class VendaBean {
                 seriesLivrosPenultimoAno.setLabel("2016");
             });
 
-        // pegando o eixo X do gráfico e setando o título do mesmo
         Axis xAxis = model.getAxis(AxisType.X);
         xAxis.setLabel("Título");
 
-        // pegando o eixo Y do gráfico e setando o título do mesmo
         Axis yAxis = model.getAxis(AxisType.Y);
         yAxis.setLabel("Quantidade");
 
-        entityManager.close();
         model.setTitle("Vendas de livros");
         model.setLegendPosition("ne");
 

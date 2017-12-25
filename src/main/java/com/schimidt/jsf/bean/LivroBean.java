@@ -1,7 +1,6 @@
 package com.schimidt.jsf.bean;
 
 import com.schimidt.jsf.dao.DAO;
-import com.schimidt.jsf.dao.JPAUtil;
 import com.schimidt.jsf.infra.RedirectView;
 import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
@@ -12,25 +11,38 @@ import com.schimidt.jsf.service.LivroService;
 import com.schimidt.jsf.validator.IsbnValidator;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.persistence.EntityManager;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class LivroBean implements Serializable {
-    private Livro livro = new Livro();
+    private static final long serialVersionUID = 8355971869549160737L;
+
+    @Inject
+    private Livro livro;
+    @Inject
+    private LivroDataModel livroDataModel;
+    @Inject
+    private DAO<Autor> autorDao;
+    @Inject
+    private DAO<Livro> livroDao;
+    @Inject
+    private Instance<LivroService> livroServiceInstance;
+
     private Integer autorId;
     private List<Livro> livros;
-    private LivroDataModel livroDataModel = new LivroDataModel();
 
     public Livro getLivro() {
         return livro;
@@ -45,7 +57,7 @@ public class LivroBean implements Serializable {
             return;
         }
 
-        new LivroService().salvarLivroComAutores(livro);
+        livroServiceInstance.get().salvarLivroComAutores(livro);
         atualizaListaLivros();
         this.livro = new Livro();
     }
@@ -55,12 +67,10 @@ public class LivroBean implements Serializable {
     }
 
     public void associarAutor() {
-        final EntityManager em = JPAUtil.newEntityManager();
-        final Autor autor = em.find(Autor.class, autorId);
+        Autor autor = autorDao.buscaPorId(autorId);
         livro.adicionaAutor(autor);
 
         this.autorId = null;
-        em.close();
     }
 
     public void setAutorId(Integer autorId) {
@@ -76,11 +86,8 @@ public class LivroBean implements Serializable {
     }
 
     public List<Autor> listarAutoresNaoSelecionados() {
-        EntityManager em = JPAUtil.newEntityManager();
-        List<Autor> autoresNaoSelecionados = new DAO<Autor>(Autor.class, em).listaTodos();
+        List<Autor> autoresNaoSelecionados = autorDao.listaTodos();
         autoresNaoSelecionados.removeAll(livro.getAutores());
-
-        em.close();
 
         return autoresNaoSelecionados;
     }
@@ -95,9 +102,7 @@ public class LivroBean implements Serializable {
     }
 
     private void atualizaListaLivros() {
-        final EntityManager em = JPAUtil.newEntityManager();
-        this.livros = new DAO<>(Livro.class, em).listaTodos();
-        em.close();
+        this.livros = livroDao.listaTodos();
     }
 
     public boolean precoEhMenor(Object valorColuna, Object filtroDigitado, Locale locale) {
@@ -133,24 +138,12 @@ public class LivroBean implements Serializable {
         return new RedirectView("autor");
     }
 
+    @Transactional
     public void remover(Livro livro) {
-        final EntityManager em = JPAUtil.newEntityManager();
+        livroDao.remove(livro);
 
-        try {
-            em.getTransaction().begin();
-            DAO<Livro> livroDAO = new DAO<>(Livro.class, em);
-            livroDAO.remove(livro);
+        System.out.printf("Apagando livro (id %d) com título %s ", livro.getId(), livro.getTitulo());
 
-            System.out.printf("Apagando livro (id %d) com título %s ", livro.getId(), livro.getTitulo());
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-
-        } finally {
-            em.close();
-        }
     }
 
     public void setLivro(Livro livro) {

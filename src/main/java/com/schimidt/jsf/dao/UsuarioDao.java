@@ -3,18 +3,21 @@ package com.schimidt.jsf.dao;
 import com.schimidt.jsf.modelo.Usuario;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public class UsuarioDao {
+public class UsuarioDao implements Serializable{
+    private static final long serialVersionUID = 8266663420317357304L;
+    @Inject
     private EntityManager em;
-
-    public UsuarioDao(EntityManager em) {
-        this.em = em;
-    }
 
     public Optional<Usuario> obterUsuarioPor(final Usuario usuario) {
 
@@ -34,9 +37,6 @@ public class UsuarioDao {
 
             } catch (NoResultException e) {
                 e.printStackTrace();
-
-            } finally {
-                em.close();
             }
         }
 

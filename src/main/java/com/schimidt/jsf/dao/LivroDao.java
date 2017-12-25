@@ -5,22 +5,22 @@ import com.schimidt.jsf.modelo.Livro;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.SortOrder;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
-public class LivroDao {
+public class LivroDao implements Serializable{
+    private static final long serialVersionUID = -6463566670384543950L;
+    @Inject
     private EntityManager em;
-    private DAO<Livro> genericDao;
-
-    public LivroDao(EntityManager em) {
-        this.em = em;
-        this.genericDao = new DAO<>(Livro.class, em);
-    }
+    @Inject
+    private DAO<Livro> dao;
 
     public List<Livro> listaTodosPaginada(int firstResult, int maxResults, String campoOrdenacao, SortOrder sentidoOrdenacao, Map<String, Object>
             filtros) {
@@ -69,7 +69,7 @@ public class LivroDao {
     }
 
     public int contaTodos() {
-        return genericDao.contaTodos();
+        return dao.contaTodos();
     }
 
     private Function<Map.Entry<String, Object>, Predicate> getEntryPredicateFunction(CriteriaBuilder builder, Root<Livro> from) {

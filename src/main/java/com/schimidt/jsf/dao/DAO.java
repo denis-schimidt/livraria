@@ -6,12 +6,14 @@ import org.primefaces.model.SortOrder;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
-public class DAO<T> {
+public class DAO<T> implements Serializable{
+    private static final long serialVersionUID = -8415268454092125910L;
 
     private final Class<T> classe;
     private final EntityManager em;

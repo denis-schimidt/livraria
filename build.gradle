@@ -24,5 +24,6 @@ dependencies {
     providedCompile 'org.jboss.weld:weld-core:2.4.6.Final'
     providedCompile 'javax.xml.bind:jaxb-api:2.3.0'
     runtime  'mysql:mysql-connector-java:6.0.6'
+    testCompile 'org.jboss.weld:weld-api:2.4.Final'
     testCompile 'junit:junit:4.12'
 }
