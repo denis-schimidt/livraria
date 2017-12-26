@@ -41,6 +41,8 @@ public class LivroBean implements Serializable {
     private DAO<Livro> livroDao;
     @Inject
     private Instance<LivroService> livroServiceInstance;
+    @Inject
+    private FacesContext context;
 
     private Integer autorId;
     private List<Livro> livros;
@@ -54,7 +56,7 @@ public class LivroBean implements Serializable {
         System.out.println("Gravando livro " + this.livro.getTitulo());
 
         if (livro.getAutores().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage("autor", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+            context.addMessage("autor", new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Livro sem autor", "Livro deve ter pelo menos um Autor"));
             return;
         }
