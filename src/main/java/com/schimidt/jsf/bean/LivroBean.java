@@ -1,6 +1,7 @@
 package com.schimidt.jsf.bean;
 
 import com.schimidt.jsf.dao.DAO;
+import com.schimidt.jsf.infra.Log;
 import com.schimidt.jsf.infra.RedirectView;
 import com.schimidt.jsf.infra.View;
 import com.schimidt.jsf.modelo.Autor;
@@ -48,6 +49,7 @@ public class LivroBean implements Serializable {
         return livro;
     }
 
+    @Log
     public void gravar() {
         System.out.println("Gravando livro " + this.livro.getTitulo());
 

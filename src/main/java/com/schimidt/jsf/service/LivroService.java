@@ -1,11 +1,11 @@
 package com.schimidt.jsf.service;
 
 import com.schimidt.jsf.dao.DAO;
+import com.schimidt.jsf.infra.CustomizedTransaction;
 import com.schimidt.jsf.modelo.Autor;
 import com.schimidt.jsf.modelo.Livro;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 
 public class LivroService implements Serializable {
@@ -16,7 +16,7 @@ public class LivroService implements Serializable {
     @Inject
     private DAO<Autor> autorDao;
 
-    @Transactional
+    @CustomizedTransaction
     public void salvarLivroComAutores(Livro livro) {
         livro.getAutores().forEach(autorDao::atualiza);
 

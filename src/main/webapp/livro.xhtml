@@ -79,7 +79,8 @@
         <h:form id="tabelaLivrosForm">
             <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true"
                          draggableColumns="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
-                         emptyMessage="Nenhum livro" rows="5" resizableColumns="true" selection="10"
+                         emptyMessage="Nenhum livro" rows="5" resizableColumns="true" selection="10" reflow="true"
+                         rowsPerPageTemplate="5,10,15"
                          style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
                 <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" filterMatchMode="startsWith">
