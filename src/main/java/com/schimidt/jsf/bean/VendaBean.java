@@ -1,7 +1,7 @@
 package com.schimidt.jsf.bean;
 
 import com.schimidt.jsf.dao.DAO;
-import com.schimidt.jsf.modelo.Livro;
+import com.schimidt.jsf.modelo.Venda;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -11,6 +11,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.Year;
+import java.util.List;
 import java.util.Random;
 
 @Named
@@ -19,26 +21,28 @@ public class VendaBean implements Serializable {
     private static final long serialVersionUID = 3124911786637655200L;
 
     @Inject
-    private DAO<Livro> dao;
+    private DAO<Venda> dao;
 
     public BarChartModel getTodasAsVendas() {
         BarChartModel model = new BarChartModel();
         model.setAnimate(true);
         model.setShadow(true);
 
-        ChartSeries seriesLivrosPenultimoAno = new ChartSeries();
-        ChartSeries seriesLivrosAnoAtual = new ChartSeries();
+        List<ChartSeries> chartSeriesByYear = List.of(new ChartSeries(), new ChartSeries(), new ChartSeries());
 
         Random random = new Random(1234);
 
         dao.listaTodos()
-            .forEach(livro -> {
-                seriesLivrosAnoAtual.set(livro.getTitulo(), random.nextInt(10000));
-                seriesLivrosAnoAtual.setLabel("2017");
+                .forEach(venda -> {
+                    Year anoAtual = Year.now();
+                    Year anoVenda = Year.of(venda.getDataVenda().getYear());
 
-                seriesLivrosPenultimoAno.set(livro.getTitulo(), random.nextInt(10000));
-                seriesLivrosPenultimoAno.setLabel("2016");
-            });
+                    int indice = anoAtual.compareTo(anoVenda);
+
+                    ChartSeries chartSeries = chartSeriesByYear.get(indice);
+                    chartSeries.setLabel(String.valueOf(anoVenda.getValue()));
+                    chartSeries.set(venda.getLivro().getTitulo(), venda.getQuantidade());
+                });
 
         Axis xAxis = model.getAxis(AxisType.X);
         xAxis.setLabel("Título");
@@ -49,8 +53,7 @@ public class VendaBean implements Serializable {
         model.setTitle("Vendas de livros");
         model.setLegendPosition("ne");
 
-        model.addSeries(seriesLivrosAnoAtual);
-        model.addSeries(seriesLivrosPenultimoAno);
+        chartSeriesByYear.forEach(model::addSeries);
 
         return model;
     }

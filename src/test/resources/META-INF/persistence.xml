@@ -8,6 +8,7 @@
         <class>com.schimidt.jsf.modelo.Autor</class>
         <class>com.schimidt.jsf.modelo.Livro</class>
         <class>com.schimidt.jsf.modelo.Usuario</class>
+        <class>com.schimidt.jsf.modelo.Venda</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

@@ -1,23 +1,23 @@
 package com.schimidt.jsf.dao;
 
-import com.schimidt.jsf.modelo.Autor;
-import com.schimidt.jsf.modelo.Genero;
-import com.schimidt.jsf.modelo.Livro;
-import com.schimidt.jsf.modelo.Usuario;
-import org.jboss.weld.SimpleCDI;
+import com.schimidt.jsf.infra.JpaProducer;
+import com.schimidt.jsf.modelo.*;
 
 import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 public class PopulaBanco {
 
-	public static void main(String[] args) {
-		SimpleCDI cdi = new SimpleCDI();
+	public static final int LIMITE_QUANTIDADE = 10000;
 
-		EntityManager em = cdi.getBeanManager().instance().select(EntityManager.class).get();
+	public static void main(String[] args) {
+		EntityManager em = new JpaProducer().newEntityManager();
 
 		em.getTransaction().begin();
 
@@ -55,6 +55,26 @@ public class PopulaBanco {
 		em.persist(valkirias);
 		em.persist(maao);
 
+		Random quantidadeRandom = new Random(System.nanoTime());
+		Random dataRandom = new Random(System.nanoTime());
+
+		IntStream.iterate(0, x-> x < 3, x-> x + 1)
+				.forEach(index->{
+					Venda vendaAlquimista = new Venda(alquemista, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+					Venda vendaBrida = new Venda(brida, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+					Venda vendaValkirias = new Venda(valkirias, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+					Venda vendaQuincas = new Venda(quincas, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+					Venda vendaCasmurro = new Venda(casmurro, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+					Venda vendaMemorias = new Venda(memorias, quantidadeRandom.nextInt(LIMITE_QUANTIDADE), getLocalDate(dataRandom, index));
+
+					em.persist(vendaAlquimista);
+					em.persist(vendaBrida);
+					em.persist(vendaValkirias);
+					em.persist(vendaQuincas);
+					em.persist(vendaCasmurro);
+					em.persist(vendaMemorias);
+				});
+
 		Livro capitaes = geraLivro("978-8-50-831169-1", "Capitaes da Areia",
 				"01/01/1937", Genero.ROMANCE, 6.90, amado);
 		Livro flor = geraLivro("978-8-53-592569-9",
@@ -67,6 +87,10 @@ public class PopulaBanco {
 
 		em.getTransaction().commit();
 		em.close();
+	}
+
+	private static LocalDate getLocalDate(Random dataRandom, int index) {
+		return LocalDate.now().minusWeeks(dataRandom.nextInt(15)).minusYears(index);
 	}
 
 	private static Autor geraAutor(String nome, String email) {
