@@ -9,13 +9,16 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
+import java.time.format.DateTimeParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
-public class LivroDao implements Serializable{
+public class LivroDao implements Serializable {
     private static final long serialVersionUID = -6463566670384543950L;
     @Inject
     private EntityManager em;
@@ -75,11 +78,31 @@ public class LivroDao implements Serializable{
     private Function<Map.Entry<String, Object>, Predicate> getEntryPredicateFunction(CriteriaBuilder builder, Root<Livro> from) {
         return entry -> {
 
-            if ("genero".equals(entry.getKey())) {
-                return builder.equal(from.get(entry.getKey()), Genero.valueOf(entry.getValue().toString()));
+            int indicePonto = entry.getKey().indexOf(".");
+            String nomeCampo = indicePonto > 0 ? entry.getKey().substring(0, indicePonto) : entry.getKey();
+
+            if ("genero".equals(nomeCampo)) {
+                return builder.equal(from.get(nomeCampo), Genero.valueOf(entry.getValue().toString()));
             }
 
-            return builder.like(from.get(entry.getKey()), "%" + entry.getValue() + "%");
+            if ("preco".equals(nomeCampo)) {
+                return builder.le(from.get(nomeCampo), Double.valueOf(entry.getValue().toString()));
+            }
+
+            if ("dataLancamento".equals(nomeCampo)) {
+
+                try {
+                    Calendar dataLancamento = Calendar.getInstance();
+                    dataLancamento.setTime((Date) entry.getValue());
+
+                    return builder.lessThanOrEqualTo(from.get(nomeCampo), dataLancamento);
+
+                } catch (DateTimeParseException e) {
+                    return builder.and();
+                }
+            }
+
+            return builder.like(from.get(nomeCampo), "%" + entry.getValue() + "%");
         };
     }
 }

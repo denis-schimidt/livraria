@@ -47,7 +47,7 @@
 
                     <p:outputLabel value="Data de Lançamento:" for="dataLancamento"/>
                     <p:calendar id="dataLancamento" value="#{livroBean.livro.dataLancamento.time}" pattern="dd/MM/yyyy HH:mm" mask="true"
-                                required="true" showOtherMonths="true" navigator="true" locale="pt_BR"/>
+                                required="true" showOtherMonths="true" navigator="true" locale="pt_BR" showButtonPanel="true"/>
                 </p:panelGrid>
             </p:fieldset>
 
@@ -78,8 +78,8 @@
 
         <h:form id="tabelaLivrosForm">
             <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true"
-                         draggableColumns="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
-                         emptyMessage="Nenhum livro" rows="5" resizableColumns="true" selection="10" reflow="true"
+                         draggableColumns="true" paginatorPosition="bottom" emptyMessage="Nenhum livro" rows="5"
+                         resizableColumns="true" selection="10" reflow="true"
                          rowsPerPageTemplate="5,10,15"
                          style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
@@ -108,10 +108,14 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Data" sortBy="#{livro.dataLancamento.time}" filterBy="#{livro.dataLancamento.time}" styleClass="data-hora"
-                          filterMatchMode="contains">
+                <p:column headerText="Data" sortBy="#{livro.dataLancamento.time}" filterBy="#{livro.dataLancamento.time}" styleClass="data-hora">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy HH:mm" mask="true" onchange="PF('tabelaLivrosWidget').filter()" id="filtro-lancamento"
+                                    showOtherMonths="true" navigator="true" locale="pt_BR" showButtonPanel="true"/>
+                    </f:facet>
+
                     <h:outputText value="#{livro.dataLancamento.time}">
-                        <f:convertDateTime pattern="dd/MM/yyyy hh:mm"/>
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
                     </h:outputText>
                 </p:column>
 

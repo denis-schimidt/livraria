@@ -109,26 +109,6 @@ public class LivroBean implements Serializable {
         this.livros = livroDao.listaTodos();
     }
 
-    public boolean precoEhMenor(Object valorColuna, Object filtroDigitado, Locale locale) {
-
-        if (StringUtils.isBlank((String) filtroDigitado)) {
-            return true;
-        }
-
-        if (valorColuna == null) {
-            return false;
-        }
-
-        try {
-            Double precoDigitado = Double.valueOf(filtroDigitado.toString().trim());
-            Double precoColuna = (Double) valorColuna;
-
-            return precoColuna.compareTo(precoDigitado) < 0;
-
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
     public LivroDataModel getLivroDataModel() {
         return livroDataModel;
@@ -156,5 +136,27 @@ public class LivroBean implements Serializable {
 
     public void removerAssociacaoCom(Autor autor) {
         this.livro.remover(autor);
+    }
+
+    @Deprecated
+    public boolean precoEhMenor(Object valorColuna, Object filtroDigitado, Locale locale) {
+
+        if (StringUtils.isBlank((String) filtroDigitado)) {
+            return true;
+        }
+
+        if (valorColuna == null) {
+            return false;
+        }
+
+        try {
+            Double precoDigitado = Double.valueOf(filtroDigitado.toString().trim());
+            Double precoColuna = (Double) valorColuna;
+
+            return precoColuna.compareTo(precoDigitado) < 0;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
