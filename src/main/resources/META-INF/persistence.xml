@@ -2,8 +2,9 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <persistence-unit name="livraria" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="livraria" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:/livrariaDS</jta-data-source>
 
         <class>com.schimidt.jsf.modelo.Autor</class>
         <class>com.schimidt.jsf.modelo.Livro</class>
@@ -11,18 +12,18 @@
         <class>com.schimidt.jsf.modelo.Venda</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/livraria"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/livraria"/>-->
+            <!--<property name="javax.persistence.jdbc.user" value="root"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value=""/>-->
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.dialect.storage_engine" value="innodb"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect"/>
-            <property name="hibernate.cache.use_second_level_cache" value="true" />
-            <property name="hibernate.cache.use_query_cache" value="true" />
-            <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" />
+            <!--<property name="hibernate.cache.use_second_level_cache" value="true" />-->
+            <!--<property name="hibernate.cache.use_query_cache" value="true" />-->
+            <!--<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" />-->
             <!--<property name="hibernate.generate_statistics" value="true" />-->
         </properties>
     </persistence-unit>

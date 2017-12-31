@@ -80,14 +80,14 @@
             <p:dataTable id="tabelaLivros" value="#{livroBean.livroDataModel}" var="livro" lazy="true" paginator="true"
                          draggableColumns="true" paginatorPosition="bottom" emptyMessage="Nenhum livro" rows="5"
                          resizableColumns="true" selection="10" reflow="true"
-                         rowsPerPageTemplate="5,10,15"
+                         rowsPerPageTemplate="5,10,15" styleClass="auto-size"
                          style="margin-top: 15px;" widgetVar="tabelaLivrosWidget">
 
-                <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" filterMatchMode="startsWith">
+                <p:column headerText="Título" sortBy="#{livro.titulo}" filterBy="#{livro.titulo}" style="min-width: auto">
                     <h:outputText value="#{livro.titulo}"/>
                 </p:column>
 
-                <p:column headerText="Genero" sortBy="#{livro.genero}" filterBy="#{livro.genero}" filterMatchMode="equals">
+                <p:column headerText="Genero" sortBy="#{livro.genero}" filterBy="#{livro.genero}" filterMatchMode="equals" styleClass="width-auto">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tabelaLivrosWidget').filter()">
                             <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>

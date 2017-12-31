@@ -50,6 +50,10 @@
     text-align: right;
 }
 
+.width-auto{
+    width: auto!important;
+}
+
 .isbn{
     text-align: center;
     width: 10em;
@@ -98,6 +102,11 @@ h1{
 
 .ui-calendar input{
     width: 8em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+.auto-size{
+    width: auto!important;
+    display: inline-table;
 }

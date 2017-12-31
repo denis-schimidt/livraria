@@ -1,7 +1,6 @@
 package com.schimidt.jsf.modelo;
 
 import com.google.common.base.MoreObjects;
-import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -9,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import org.hibernate.annotations.Cache;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity(name = "livro")

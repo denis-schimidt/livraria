@@ -1,10 +1,7 @@
 package com.schimidt.jsf.modelo;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "usuario", uniqueConstraints = {@UniqueConstraint(name = "email_contraint", columnNames = {"email"})})

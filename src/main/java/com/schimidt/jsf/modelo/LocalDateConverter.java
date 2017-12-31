@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 @Converter(autoApply = true)
-class LocalDateConverter  implements AttributeConverter<LocalDate, Date> {
+public class LocalDateConverter  implements AttributeConverter<LocalDate, Date> {
 
     @Override
     public Date convertToDatabaseColumn(LocalDate locDate) {

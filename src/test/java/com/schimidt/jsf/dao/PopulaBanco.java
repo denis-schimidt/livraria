@@ -1,6 +1,5 @@
 package com.schimidt.jsf.dao;
 
-import com.schimidt.jsf.infra.JpaProducer;
 import com.schimidt.jsf.modelo.*;
 
 import javax.persistence.EntityManager;
@@ -17,7 +16,7 @@ public class PopulaBanco {
 	public static final int LIMITE_QUANTIDADE = 10000;
 
 	public static void main(String[] args) {
-		EntityManager em = new JpaProducer().newEntityManager();
+		EntityManager em = null;//new JpaProducer().newEntityManager();
 
 		em.getTransaction().begin();
 
